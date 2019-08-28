@@ -46,7 +46,7 @@ public class FacadeExample {
         
     }
     public static void main(String[] args) {
-        FacadeExample fe = getFacadeExample(EMF_Creator.getEMF());
+        FacadeExample fe = getFacadeExample(EMF_Creator.getEMF(EMF_Creator.Strategy.DROP_AND_CREATE));
         long count = fe.getRenameMeCount();
         System.out.println("count: "+count);
     }

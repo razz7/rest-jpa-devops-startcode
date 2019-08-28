@@ -25,7 +25,7 @@ public class FacadeExampleTest {
 //                "dev",
 //                "ax2",
 //                EMF_Creator.Strategy.DROP_AND_CREATE);
-        emf = EMF_Creator.getEMF();
+        emf = EMF_Creator.getEMF(EMF_Creator.Strategy.DROP_AND_CREATE);
         facade = FacadeExample.getFacadeExample(emf);
     }
     

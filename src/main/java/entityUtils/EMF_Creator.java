@@ -31,9 +31,9 @@ public class EMF_Creator {
         }
     };
 
-    public static EntityManagerFactory getEMF(){
+    public static EntityManagerFactory getEMF(Strategy strategy){
         Map<String, String> props = getProps();
-            return createEntityManagerFactory("pu", props.get("connection"), props.get("user"), props.get("password"), Strategy.CREATE);
+            return createEntityManagerFactory("pu", props.get("connection"), props.get("user"), props.get("password"), strategy);
     }
     
     

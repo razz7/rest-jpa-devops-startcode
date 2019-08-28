@@ -25,7 +25,7 @@ public class RenameMeResource {
 //                "dev",
 //                "ax2",
 //                EMF_Creator.Strategy.DROP_AND_CREATE);
-    private static final EntityManagerFactory EMF = EMF_Creator.getEMF();
+    private static final EntityManagerFactory EMF = EMF_Creator.getEMF(EMF_Creator.Strategy.CREATE);
     private static final FacadeExample FACADE =  FacadeExample.getFacadeExample(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
             

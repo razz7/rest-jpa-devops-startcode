@@ -26,12 +26,13 @@ public class RenameMeResourceTest {
 //    private static final String SERVER_URL = "http://localhost/api";
 //    //Read this line from a settings-file  since used several places
 //    private static final String TEST_DB = "jdbc:mysql://localhost:3307/startcodev2-test";
-    static Map<String, String> props = entityUtils.EMF_Creator.getProps();
-    static final URI BASE_URI = UriBuilder.fromUri(props.get("test_server")).port(Integer.parseInt(props.get("test_port"))).build();
+    private static final Map<String, String> PROPS = entityUtils.EMF_Creator.getProps();
+    static final URI BASE_URI = UriBuilder.fromUri(PROPS.get("test_server")).port(Integer.parseInt(PROPS.get("test_port"))).build();
     private static HttpServer httpServer;
     private static EntityManagerFactory emf;
 
     static HttpServer startServer() {
+        System.out.println("BASE_URI: "+BASE_URI);
         ResourceConfig rc = ResourceConfig.forApplication(new ApplicationConfig());
         return GrizzlyHttpServerFactory.createHttpServer(BASE_URI, rc);
     }
@@ -39,22 +40,17 @@ public class RenameMeResourceTest {
     @BeforeAll
     public static void setUpClass() {
         //First Drop and Rebuild the test database 
-        emf = EMF_Creator.createEntityManagerFactory(
-                "pu",
-                "jdbc:mysql://localhost:3307/startcodev2-test",
-                "dev",
-                "ax2",
-                EMF_Creator.Strategy.DROP_AND_CREATE);
+        emf = EMF_Creator.getEMF(EMF_Creator.Strategy.DROP_AND_CREATE);
 
         //Set System property so the project executed by the Grizly-server wil use this same database
-        System.setProperty("IS_TEST", props.get("connection"));
+        System.setProperty("IS_TEST", PROPS.get("connection"));
         //We are using the database on the virtual Vagrant image, so username password are the same for all dev-databases
         
         httpServer = startServer();
         
         //Setup RestAssured
-        RestAssured.baseURI = props.get("test_server");
-        RestAssured.port = Integer.parseInt(props.get("test_port"));
+        RestAssured.baseURI = PROPS.get("test_server");
+        RestAssured.port = Integer.parseInt(PROPS.get("test_port"));
         
         RestAssured.defaultParser = Parser.JSON;
     }
@@ -71,7 +67,8 @@ public class RenameMeResourceTest {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.createQuery("DELETE from RenameMe").executeUpdate();
+//            em.createQuery("DELETE from RenameMe").executeUpdate();
+            em.createNamedQuery("RenameMe.removeAll", RenameMe.class).executeUpdate();
             em.persist(new RenameMe("Some txt","More text"));
             em.persist(new RenameMe("aaa","bbb"));
            

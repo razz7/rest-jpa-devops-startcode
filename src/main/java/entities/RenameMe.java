@@ -5,9 +5,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 
 @Entity
+@NamedQueries({
+@NamedQuery(name="RenameMe.findAll", query="SELECT r FROM RenameMe r"), 
+@NamedQuery(name="RenameMe.removeAll", query="DELETE FROM RenameMe") 
+})
 public class RenameMe implements Serializable {
 
     private static final long serialVersionUID = 1L;
