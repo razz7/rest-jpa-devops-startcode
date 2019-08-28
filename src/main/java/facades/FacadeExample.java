@@ -1,10 +1,8 @@
 package facades;
 
-import entities.RenameMe;
-import java.util.List;
+import entityUtils.EMF_Creator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 /**
  *
@@ -47,5 +45,9 @@ public class FacadeExample {
         }
         
     }
-
+    public static void main(String[] args) {
+        FacadeExample fe = getFacadeExample(EMF_Creator.getEMF());
+        long count = fe.getRenameMeCount();
+        System.out.println("count: "+count);
+    }
 }

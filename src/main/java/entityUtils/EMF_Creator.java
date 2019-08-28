@@ -1,5 +1,9 @@
 package entityUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -27,6 +31,11 @@ public class EMF_Creator {
         }
     };
 
+    public static EntityManagerFactory getEMF(){
+        Map<String, String> props = getProps();
+            return createEntityManagerFactory("pu", props.get("connection"), props.get("user"), props.get("password"), Strategy.CREATE);
+    }
+    
     
     public static EntityManagerFactory createEntityManagerFactory(
             String puName,
@@ -46,6 +55,7 @@ public class EMF_Creator {
         }
         
         //A deployment server MUST set the following values which will override the defaults
+        System.out.println("IS DEPLOYED " + System.getenv("DEPLOYED"));
         boolean isDeployed = (System.getenv("DEPLOYED") != null);
         if (isDeployed) {
             user = System.getenv("USER");
@@ -76,6 +86,33 @@ public class EMF_Creator {
         }
         return Persistence.createEntityManagerFactory(puName, props);
     }
+    
+    public static Map<String,String> getProps(){
+        Map<String, String> props = new HashMap();
+        try (InputStream input = EMF_Creator.class.getClassLoader().getResourceAsStream("config.properties")) {
+            Properties config = new Properties();
+            config.load(input);
 
+            props.put("server",config.getProperty("db.url"));
+            props.put("port",config.getProperty("db.port"));
+            props.put("user",config.getProperty("db.user"));
+            props.put("password",config.getProperty("db.password"));
+            props.put("database",config.getProperty("db.db"));
+            props.put("test_port",config.getProperty("test.port"));
+            props.put("test_server",config.getProperty("test.server"));
+            props.put("connection","jdbc:mysql://"+config.getProperty("db.server")+":"+config.getProperty("db.port")+"/"+config.getProperty("db.database"));
+            
+            } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return props;
+    }
+    public static void main(String[] args) {
+        try {
+            System.out.println(getProps().get("connection"));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
     
 }

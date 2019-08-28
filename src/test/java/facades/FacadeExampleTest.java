@@ -19,12 +19,13 @@ public class FacadeExampleTest {
     
     @BeforeAll
     public static void setUpClass() {
-          emf = EMF_Creator.createEntityManagerFactory(
-                "pu",
-                "jdbc:mysql://localhost:3307/startcodev2-test",
-                "dev",
-                "ax2",
-                EMF_Creator.Strategy.DROP_AND_CREATE);
+//          emf = EMF_Creator.createEntityManagerFactory(
+//                "pu",
+//                "jdbc:mysql://localhost:3307/startcodev2-test",
+//                "dev",
+//                "ax2",
+//                EMF_Creator.Strategy.DROP_AND_CREATE);
+        emf = EMF_Creator.getEMF();
         facade = FacadeExample.getFacadeExample(emf);
     }
     

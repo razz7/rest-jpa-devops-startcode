@@ -6,6 +6,7 @@ import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
 import io.restassured.parsing.Parser;
 import java.net.URI;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.UriBuilder;
@@ -21,12 +22,12 @@ import org.junit.jupiter.api.Test;
 
 public class RenameMeResourceTest {
 
-    private static final int SERVER_PORT = 7777;
-    private static final String SERVER_URL = "http://localhost/api";
-    //Read this line from a settings-file  since used several places
-    private static final String TEST_DB = "jdbc:mysql://localhost:3307/startcodev2-test";
-
-    static final URI BASE_URI = UriBuilder.fromUri(SERVER_URL).port(SERVER_PORT).build();
+//    private static final int SERVER_PORT = 7777;
+//    private static final String SERVER_URL = "http://localhost/api";
+//    //Read this line from a settings-file  since used several places
+//    private static final String TEST_DB = "jdbc:mysql://localhost:3307/startcodev2-test";
+    static Map<String, String> props = entityUtils.EMF_Creator.getProps();
+    static final URI BASE_URI = UriBuilder.fromUri(props.get("test_server")).port(Integer.parseInt(props.get("test_port"))).build();
     private static HttpServer httpServer;
     private static EntityManagerFactory emf;
 
@@ -46,14 +47,14 @@ public class RenameMeResourceTest {
                 EMF_Creator.Strategy.DROP_AND_CREATE);
 
         //Set System property so the project executed by the Grizly-server wil use this same database
-        System.setProperty("IS_TEST", TEST_DB);
+        System.setProperty("IS_TEST", props.get("connection"));
         //We are using the database on the virtual Vagrant image, so username password are the same for all dev-databases
         
         httpServer = startServer();
         
         //Setup RestAssured
-        RestAssured.baseURI = SERVER_URL;
-        RestAssured.port = SERVER_PORT;
+        RestAssured.baseURI = props.get("test_server");
+        RestAssured.port = Integer.parseInt(props.get("test_port"));
         
         RestAssured.defaultParser = Parser.JSON;
     }
