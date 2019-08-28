@@ -46,7 +46,6 @@ public class EMF_Creator {
         }
         
         //A deployment server MUST set the following values which will override the defaults
-        System.out.println("DEPLOYED -->"+System.getenv("DEPLOYED"));
         boolean isDeployed = (System.getenv("DEPLOYED") != null);
         if (isDeployed) {
             user = System.getenv("USER");
