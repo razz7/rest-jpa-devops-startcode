@@ -74,6 +74,7 @@ public class EMF_Creator {
         Then save the file, and restart tomcat: sudo systemctl restart tomcat
         */
         
+        System.out.println("PU_NAME ------------> "+puName);
         System.out.println("USER ------------> "+user);
         System.out.println("PW --------------> "+pw);
         System.out.println("CONNECTION STR---> "+connection_str);
