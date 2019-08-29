@@ -19,12 +19,19 @@ public class FacadeExampleTest {
     
     @BeforeAll
     public static void setUpClass() {
-          emf = EMF_Creator.createEntityManagerFactory(
-                "pu",
-                "jdbc:mysql://localhost:3307/startcode_test",
-                "dev",
-                "ax2",
-                EMF_Creator.Strategy.DROP_AND_CREATE);
+        //   emf = EMF_Creator.createEntityManagerFactory(
+        //         "pu",
+        //         "jdbc:mysql://localhost:3307/startcode_test",
+        //         "dev",
+        //         "ax2",
+        //         EMF_Creator.Strategy.DROP_AND_CREATE);
+//          emf = EMF_Creator.createEntityManagerFactory(
+//                "pu",
+//                "jdbc:mysql://localhost:3307/startcodev2-test",
+//                "dev",
+//                "ax2",
+//                EMF_Creator.Strategy.DROP_AND_CREATE);
+        emf = EMF_Creator.getEMF(EMF_Creator.Strategy.DROP_AND_CREATE);
         facade = FacadeExample.getFacadeExample(emf);
     }
     
@@ -41,6 +48,7 @@ public class FacadeExampleTest {
         try {
             em.getTransaction().begin();
             em.createNamedQuery("RenameMe.deleteAllRows").executeUpdate();
+            // em.createQuery("DELETE from RenameMe").executeUpdate();
             em.persist(new RenameMe("Some txt","More text"));
             em.persist(new RenameMe("aaa","bbb"));
            
