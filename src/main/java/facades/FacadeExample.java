@@ -1,6 +1,6 @@
 package facades;
 
-import entities.Movie;
+import entities.RenameMe;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -10,13 +10,13 @@ import javax.persistence.Persistence;
  *
  * Rename Class to a relevant name Add add relevant facade methods
  */
-public class MovieFacade {
+public class FacadeExample {
 
-    private static MovieFacade instance;
+    private static FacadeExample instance;
     private static EntityManagerFactory emf;
     
     //Private Constructor to ensure Singleton
-    private MovieFacade() {}
+    private FacadeExample() {}
     
     
     /**
@@ -24,10 +24,10 @@ public class MovieFacade {
      * @param _emf
      * @return an instance of this facade class.
      */
-    public static MovieFacade getFacadeExample(EntityManagerFactory _emf) {
+    public static FacadeExample getFacadeExample(EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;
-            instance = new MovieFacade();
+            instance = new FacadeExample();
         }
         return instance;
     }
@@ -37,11 +37,11 @@ public class MovieFacade {
     }
     
     //TODO Remove/Change this before use
-    public long getId(){
+    public long getRenameMeCount(){
         EntityManager em = emf.createEntityManager();
         try{
-            long getId = (long)em.createQuery("SELECT *(r) FROM Movie r").getSingleResult();
-            return getId;
+            long renameMeCount = (long)em.createQuery("SELECT COUNT(r) FROM RenameMe r").getSingleResult();
+            return renameMeCount;
         }finally{  
             em.close();
         }
